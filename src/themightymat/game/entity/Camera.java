@@ -41,7 +41,6 @@ public class Camera extends Entity {
 			double xDiff = this.x - player.getX();
 			double yDiff = this.y - player.getY();
 			
-			
 			double playerAngle = Math.toDegrees(Math.atan2(xDiff, yDiff)); // Degrees the player is from the camera
 			if (playerAngle < 0) {
 				playerAngle = 360 + playerAngle;

@@ -52,8 +52,9 @@ public class Player extends Mob {
 		}
 		
 		if (!detected) {
-			if (ticks%5 == 0 && Game.detection > 0) {
+			if (ticks%5 == 0) {
 				Game.detection--;
+				if (Game.detection < 0) { Game.detection = 0; };
 			}
 		}
 		
