@@ -1,5 +1,11 @@
 package themightymat.game;
 
+
+
+/* ~ ~ ~ ~ ~ GAME VERSION = 00.03 ~ ~ ~ ~ ~*/
+
+
+
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -21,7 +27,6 @@ import themightymat.game.entity.Camera;
 import themightymat.game.entity.CameraRoom;
 import themightymat.game.entity.Door;
 import themightymat.game.entity.DoorRelease;
-import themightymat.game.entity.Entity;
 import themightymat.game.entity.Guard;
 import themightymat.game.entity.Objective;
 import themightymat.game.entity.Player;
@@ -62,6 +67,7 @@ public class Game extends Canvas implements Runnable{
 	public Guard guard;
 	
 	public List<Player> players = new ArrayList<Player>();
+	public static List<Camera> cameras = new ArrayList<Camera>();
 	
 	public static boolean camerasDisabled = false;
 	
@@ -103,19 +109,29 @@ public class Game extends Canvas implements Runnable{
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
 		input = new InputHandler(this);
 		level = new Level("/level2.png");
+		
+		spawnLoop : for (Point newSpawn : Level.spawns) { // Iterates through spawn blocks (should only be 1, if none it will not execute)
+			playerStartingX = (int) newSpawn.getX(); // Set player starting co-ordinates
+			playerStartingY = (int) newSpawn.getY();
+			break spawnLoop; // Only find the first (top left) spawn
+		}
+		
 		player = new Player(level, playerStartingX, playerStartingY, input);
-//		camera = new Camera(level, 80, 80, 355, 90, player, true, true);
+//		camera = new Camera(level, 80, 80, 0, 90, player, true, true);	// Developer Testing
 		level.addEntity(player);
-//		level.addEntity(camera);
-//		guard = new Guard(level, 120, 120, 0, input, player);
-//		level.addEntity(guard);
+//		level.addEntity(camera);										// Developer Testing
+//		cameras.add(camera);											// Developer Testing
+//		guard = new Guard(level, 120, 120, 0, input, player);			// Developer Testing
+//		level.addEntity(guard);											// Developer Testing
 		
 		Random randomGenerator = new Random();
 		
 		for (Point newCamera : Level.cameras) { // For every camera in the level
 			double newCameraX = newCamera.getX();
 			double newCameraY = newCamera.getY();
-			level.addEntity(new Camera(level, (int) newCameraX,  (int) newCameraY, randomGenerator.nextInt(360), 90, player, true, true)); // Add the camera
+			Camera tempCam = new Camera(level, (int) newCameraX,  (int) newCameraY, randomGenerator.nextInt(360), 90, player, true, true);
+			level.addEntity(tempCam); // Add the camera
+			cameras.add(tempCam);
 		} for (Point newGuard : Level.guards) { // For every guard in the level
 			double newGuardX = newGuard.getX();
 			double newGuardY = newGuard.getY();
@@ -184,13 +200,22 @@ public class Game extends Canvas implements Runnable{
 				frames = 0;
 				ticks = 0; // Reset frames and ticks
 			}
+			
+			
 		}
 		
 	}
 	
 	
 	public void tick() {
-		tickCount++;	
+		tickCount++;
+		
+		if (player.detected) {
+			System.out.println("Hello");
+			detection += DETECTION_RATE;
+			if (detection > 100) { detection = 100; }
+		}
+		
 		level.tick();
 	}
 	
@@ -222,17 +247,13 @@ public class Game extends Canvas implements Runnable{
 		
 		g2.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 		
-		for (Entity entity : level.entities) {
-			if (entity.getClass() == Camera.class) {
-//				System.out.println((entity.maxViewLeft.getX() + ", " + entity.maxViewLeft.getY()));
-//				System.out.println((entity.getX() + ", " + entity.getY()));
-				g2.setStroke(new BasicStroke(SCALE));
-				g2.setColor(Color.RED.brighter());
-				
-				if (!entity.getCanBeDisabledValue() || !camerasDisabled) {
-					g2.drawLine((entity.getX() - screen.xOffset) * SCALE, (int) (entity.getY() - screen.yOffset) * SCALE, (int) (entity.maxViewLeft.getX() - screen.xOffset) * SCALE, (int) (entity.maxViewLeft.getY() - screen.yOffset) * SCALE);
-					g2.drawLine((entity.getX() - screen.xOffset) * SCALE, (int) (entity.getY() - screen.yOffset) * SCALE, (int) (entity.maxViewRight.getX() - screen.xOffset) * SCALE, (int) (entity.maxViewRight.getY() - screen.yOffset) * SCALE);
-				}
+		for (Camera entity : cameras) {
+			g2.setStroke(new BasicStroke(SCALE));
+			g2.setColor(Color.RED.brighter());
+			
+			if (!entity.getCanBeDisabledValue() || !camerasDisabled) {
+				g2.drawLine((entity.getX() - screen.xOffset) * SCALE, (int) (entity.getY() - screen.yOffset) * SCALE, (int) (entity.maxViewLeft.getX() - screen.xOffset) * SCALE, (int) (entity.maxViewLeft.getY() - screen.yOffset) * SCALE);
+				g2.drawLine((entity.getX() - screen.xOffset) * SCALE, (int) (entity.getY() - screen.yOffset) * SCALE, (int) (entity.maxViewRight.getX() - screen.xOffset) * SCALE, (int) (entity.maxViewRight.getY() - screen.yOffset) * SCALE);
 			}
 		}
 		
