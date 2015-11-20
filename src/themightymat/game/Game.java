@@ -1,11 +1,5 @@
 package themightymat.game;
 
-
-
-/* ~ ~ ~ ~ ~ GAME VERSION = 00.03 ~ ~ ~ ~ ~*/
-
-
-
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -40,19 +34,21 @@ public class Game extends Canvas implements Runnable{
 
 	private static final long serialVersionUID = 1L;
 	
+	public static final double GAME_VERSION = 00.03;
+	
 	public static final int WIDTH = 160;
 	public static final int HEIGHT = WIDTH;
 	public static final int SCALE = 4; // No higher than 6
 	public static final String NAME = "Game";
 	
-	public static final int DETECTION_RATE = 2;
+	public static final double DETECTION_RATE = 1.0;
 	
 	private JFrame frame;
 	
 	public boolean running = false;
 	public int tickCount = 0; // Total ticks since program start
 	
-	public static int detection = 0; // Player detection
+	public static double detection = 0; // Player detection
 	public static int money = 0; // Player money and score
 	
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -211,7 +207,6 @@ public class Game extends Canvas implements Runnable{
 		tickCount++;
 		
 		if (player.detected) {
-			System.out.println("Hello");
 			detection += DETECTION_RATE;
 			if (detection > 100) { detection = 100; }
 		}
@@ -232,8 +227,10 @@ public class Game extends Canvas implements Runnable{
 		level.renderTiles(screen, xOffset, yOffset);
 		level.renderEntities(screen);
 		
-		Font.render(Integer.toString(detection), screen, screen.xOffset + 5, screen.yOffset + 5, Colors.get(000, 000, 555, 555), 1);
+		Font.render(Integer.toString((int) Math.round(detection)), screen, screen.xOffset + 5, screen.yOffset + 5, Colors.get(000, 000, 555, 555), 1);
 		Font.render("$" + Integer.toString(money), screen, screen.xOffset + 5, screen.yOffset + 15, Colors.get(000, 000, 555, 555), 1);
+		
+		Font.render("Alpha " + GAME_VERSION, screen, screen.xOffset, (screen.height - 10) + screen.yOffset, Colors.get(000, 000, 000, 555), 1);
 		
 		for (int y=0; y < screen.height; y++) {
 			for (int x=0; x < screen.width; x++) {

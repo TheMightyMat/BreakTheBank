@@ -56,11 +56,6 @@ public class Player extends Mob {
 				Game.detection--;
 			}
 		}
-		if (detected) {
-			System.out.println("Hello");
-			Game.detection += Game.DETECTION_RATE;
-			if (Game.detection > 100) { Game.detection = 100; }
-		}
 		
 	}
 	
