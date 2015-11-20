@@ -15,6 +15,8 @@ public class Camera extends Entity {
 	private int color = Colors.get(500, 222, 000, 333);
 	private Player player;
 	
+	public boolean canSeePlayer = false;
+	
 	boolean shouldRender;
 	public boolean canBeDisabled;
 	
@@ -39,10 +41,6 @@ public class Camera extends Entity {
 			double xDiff = this.x - player.getX();
 			double yDiff = this.y - player.getY();
 			
-//			System.out.println("X = " + this.x + ", " + player.getX());
-//			System.out.println("Y = " + this.y + ", " + (Game.HEIGHT - player.getY()));
-//			
-//			System.out.println(xDiff + ", " + yDiff);
 			
 			double playerAngle = Math.toDegrees(Math.atan2(xDiff, yDiff)); // Degrees the player is from the camera
 			if (playerAngle < 0) {
@@ -52,8 +50,6 @@ public class Camera extends Entity {
 			
 			this.maxViewLeft = new Point((int) (50 * Math.sin(Math.toRadians(angle + fov/2 + 180))) + this.x, (int) (50 * Math.cos(Math.toRadians(angle + fov/2 + 180))) + this.y);
 			this.maxViewRight = new Point((int) (50 * Math.sin(Math.toRadians(angle - fov/2 + 180))) + this.x, (int) (50 * Math.cos(Math.toRadians(angle - fov/2 + 180))) + this.y);
-			
-			// System.out.println(this.maxViewLeft + ", " + this.maxViewRight);
 			
 			double minAngle = angle + (fov/2);
 			double maxAngle = angle - (fov/2);
@@ -74,21 +70,20 @@ public class Camera extends Entity {
 			if (playerDist < 50) {
 				if (playerAngle < minAngle && playerAngle > maxAngle && !isLessThanZero) {
 					player.detected = true;
-					Game.detection += Game.DETECTION_RATE;
-					if (Game.detection > 100) Game.detection = 100;
+					canSeePlayer = true;
 				} else if (playerAngle < minAngle && isLessThanZero || playerAngle > maxAngle && isLessThanZero) {
 					player.detected = true;
-					Game.detection += Game.DETECTION_RATE;
-					if (Game.detection > 100) Game.detection = 100;
+					canSeePlayer = true;
 				} else if ((playerAngle < minAngle && isGreaterThan360) || (playerAngle > maxAngle && isGreaterThan360)) {
 					player.detected = true;
-					Game.detection += Game.DETECTION_RATE;
-					if (Game.detection > 100) Game.detection = 100;
+					canSeePlayer = true;
 				} else {
 					player.detected = false;
+					canSeePlayer = false;
 				}
-			} else {
-				player.detected = false;
+			}
+			if (playerDist > 50) {
+				canSeePlayer = false;
 			}
 		}
 	}
@@ -126,7 +121,6 @@ public class Camera extends Entity {
 	@Override
 	public void setDisabled(boolean value) {
 		// TODO Auto-generated method stub
-		
 	}
 
 }
