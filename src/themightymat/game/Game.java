@@ -103,6 +103,13 @@ public class Game extends Canvas implements Runnable{
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
 		input = new InputHandler(this);
 		level = new Level("/level2.png");
+		
+		spawnLoop : for (Point newSpawn : Level.spawns) { // Iterates through spawn blocks (should only be 1, if none it will not execute)
+			playerStartingX = (int) newSpawn.getX(); // Set player starting co-ordinates
+			playerStartingY = (int) newSpawn.getY();
+			break spawnLoop; // Only find the first (top left) spawn
+		}
+		
 		player = new Player(level, playerStartingX, playerStartingY, input);
 //		camera = new Camera(level, 80, 80, 355, 90, player, true, true);
 		level.addEntity(player);
