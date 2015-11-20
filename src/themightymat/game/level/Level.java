@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import themightymat.game.Game;
 import themightymat.game.entity.Entity;
 import themightymat.game.gfx.Screen;
 import themightymat.game.level.tiles.Tile;

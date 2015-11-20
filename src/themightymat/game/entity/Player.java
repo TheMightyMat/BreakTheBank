@@ -38,10 +38,28 @@ public class Player extends Mob {
 			isMoving = false;
 		}
 		
+		
+		boolean hasLeftRange = true;
+		for (Camera camera : Game.cameras) {
+			if (camera.canSeePlayer) {
+				hasLeftRange = false;
+				break;
+			}
+		}
+		
+		if (hasLeftRange) {
+			detected = false;
+		}
+		
 		if (!detected) {
 			if (ticks%5 == 0 && Game.detection > 0) {
 				Game.detection--;
 			}
+		}
+		if (detected) {
+			System.out.println("Hello");
+			Game.detection += Game.DETECTION_RATE;
+			if (Game.detection > 100) { Game.detection = 100; }
 		}
 		
 	}
@@ -49,7 +67,7 @@ public class Player extends Mob {
 	
 	@Override
 	public boolean hasCollided(int xa, int ya) {
-		int xMin = 0; // How many pixels in to start the hitbox from the midle
+		int xMin = 0; // How many pixels in to start the hitbox from the middle
 		int xMax = 7; // Where to end the hitbox from the middle
 		int yMin = -2; // Start the hitbox from the middle
 		int yMax = 7; // Finish the hitbox from the middle
@@ -123,6 +141,14 @@ public class Player extends Mob {
 	public void setDisabled(boolean value) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public int getPixelWidth() {
+		return 8;
+	}
+	
+	public int getPixelHeight() {
+		return 8;
 	}
 
 	

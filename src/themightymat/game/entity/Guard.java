@@ -1,5 +1,6 @@
 package themightymat.game.entity;
 
+import themightymat.game.Game;
 import themightymat.game.InputHandler;
 import themightymat.game.gfx.Colors;
 import themightymat.game.gfx.Screen;
@@ -20,6 +21,7 @@ public class Guard extends Player {
 		if (movingDir > 0 || movingDir <= 4) {
 			this.guardCamera = new Camera(level, this.x, this.y, (this.movingDir*90), 90, player, false, false);
 			level.addEntity(guardCamera);
+			Game.cameras.add(guardCamera);
 			
 			this.movingDir = movingDir;
 		} else { // Bad movingDir parameter
