@@ -10,7 +10,7 @@ public class Font {
 		
 		for(int i=0; i<msg.length(); i++) {
 			int charIndex = chars.indexOf(msg.charAt(i));
-			if (charIndex >= 0) screen.render(x + (i * 8), y, charIndex + 28 * 30, color, 0x00, scale);
+			if (charIndex >= 0) screen.render(x + (i * (8 * scale)), y, charIndex + 28 * 30, color, 0x00, scale);
 		}
 	}
 }

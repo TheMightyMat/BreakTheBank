@@ -232,18 +232,6 @@ public class Game extends Canvas implements Runnable{
 		level.renderTiles(screen, xOffset, yOffset);
 		level.renderEntities(screen);
 		
-		Font.render(Integer.toString((int) Math.round(detection)), screen, screen.xOffset + 5, screen.yOffset + 5, Colors.get(000, 000, 555, 555), 1);
-		Font.render("$" + Integer.toString(money), screen, screen.xOffset + 5, screen.yOffset + 15, Colors.get(000, 000, 555, 555), 1);
-		
-		Font.render("Alpha " + GAME_VERSION, screen, screen.xOffset, (screen.height - 10) + screen.yOffset, Colors.get(000, 000, 000, 555), 1);
-		
-		for (int y=0; y < screen.height; y++) {
-			for (int x=0; x < screen.width; x++) {
-				int colorCode = screen.pixels[x+y * screen.width];
-				if (colorCode < 255) pixels[x+y * WIDTH] = colors[colorCode];
-			}
-		}
-		
 		Graphics g = bs.getDrawGraphics();
 		Graphics2D g2 = (Graphics2D) g;
 		
@@ -261,8 +249,21 @@ public class Game extends Canvas implements Runnable{
 			g2.drawLine((player.getX() - screen.xOffset) * SCALE, (player.getY() - screen.yOffset) * SCALE, (player.getX() - screen.xOffset) * SCALE + 1, (player.getY()- screen.yOffset) * SCALE + 1 );
 		}
 		
+		Font.render(Integer.toString((int) Math.round(detection)), screen, screen.xOffset + 5, screen.yOffset + 5, Colors.get(000, 000, 555, 555), 1);
+		Font.render("$" + Integer.toString(money), screen, screen.xOffset + 5, screen.yOffset + 15, Colors.get(000, 000, 555, 555), 1);
+		
+		Font.render("Alpha " + GAME_VERSION, screen, screen.xOffset, (screen.height - 10) + screen.yOffset, Colors.get(000, 000, 000, 555), 1);
+		
 		g.dispose();
 		bs.show();
+		
+		for (int y=0; y < screen.height; y++) {
+			for (int x=0; x < screen.width; x++) {
+				int colorCode = screen.pixels[x+y * screen.width];
+				if (colorCode < 255) pixels[x+y * WIDTH] = colors[colorCode];
+			}
+		}
+		
 	}
 	
 	public static void main(String[] args) {
