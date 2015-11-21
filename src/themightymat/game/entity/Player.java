@@ -38,26 +38,17 @@ public class Player extends Mob {
 			isMoving = false;
 		}
 		
-		
-		boolean hasLeftRange = true;
+		boolean detectedThisTick = false; // Stores if the player was detected this tick
 		for (Camera camera : Game.cameras) {
 			if (camera.canSeePlayer) {
-				hasLeftRange = false;
+				detectedThisTick = true;
+				detected = true;
 				break;
 			}
 		}
-		
-		if (hasLeftRange) {
+		if (!detectedThisTick) {
 			detected = false;
 		}
-		
-		if (!detected) {
-			if (ticks%5 == 0) {
-				Game.detection--;
-				if (Game.detection < 0) { Game.detection = 0; };
-			}
-		}
-		
 	}
 	
 	

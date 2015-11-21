@@ -68,16 +68,12 @@ public class Camera extends Entity {
 			
 			if (playerDist < 50) {
 				if (playerAngle < minAngle && playerAngle > maxAngle && !isLessThanZero) {
-					player.detected = true;
 					canSeePlayer = true;
 				} else if (playerAngle < minAngle && isLessThanZero || playerAngle > maxAngle && isLessThanZero) {
-					player.detected = true;
 					canSeePlayer = true;
 				} else if ((playerAngle < minAngle && isGreaterThan360) || (playerAngle > maxAngle && isGreaterThan360)) {
-					player.detected = true;
 					canSeePlayer = true;
 				} else {
-					player.detected = false;
 					canSeePlayer = false;
 				}
 			}

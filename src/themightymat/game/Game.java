@@ -113,7 +113,7 @@ public class Game extends Canvas implements Runnable{
 		}
 		
 		player = new Player(level, playerStartingX, playerStartingY, input);
-//		camera = new Camera(level, 80, 80, 0, 90, player, true, true);	// Developer Testing
+//		camera = new Camera(level, 50, 80, 90, 90, player, true, true);	// Developer Testing
 		level.addEntity(player);
 //		level.addEntity(camera);										// Developer Testing
 //		cameras.add(camera);											// Developer Testing
@@ -209,6 +209,11 @@ public class Game extends Canvas implements Runnable{
 		if (player.detected) {
 			detection += DETECTION_RATE;
 			if (detection > 100) { detection = 100; }
+		} else {
+			if (tickCount%5 == 0) {
+				detection--;
+				if (detection < 0) { Game.detection = 0; };
+			}
 		}
 		
 		level.tick();
@@ -252,6 +257,8 @@ public class Game extends Canvas implements Runnable{
 				g2.drawLine((entity.getX() - screen.xOffset) * SCALE, (int) (entity.getY() - screen.yOffset) * SCALE, (int) (entity.maxViewLeft.getX() - screen.xOffset) * SCALE, (int) (entity.maxViewLeft.getY() - screen.yOffset) * SCALE);
 				g2.drawLine((entity.getX() - screen.xOffset) * SCALE, (int) (entity.getY() - screen.yOffset) * SCALE, (int) (entity.maxViewRight.getX() - screen.xOffset) * SCALE, (int) (entity.maxViewRight.getY() - screen.yOffset) * SCALE);
 			}
+			
+			g2.drawLine((player.getX() - screen.xOffset) * SCALE, (player.getY() - screen.yOffset) * SCALE, (player.getX() - screen.xOffset) * SCALE + 1, (player.getY()- screen.yOffset) * SCALE + 1 );
 		}
 		
 		g.dispose();
