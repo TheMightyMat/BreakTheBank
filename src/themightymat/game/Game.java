@@ -29,6 +29,7 @@ import themightymat.game.gfx.Font;
 import themightymat.game.gfx.Screen;
 import themightymat.game.gfx.SpriteSheet;
 import themightymat.game.level.Level;
+import themightymat.game.ui.UI;
 
 public class Game extends Canvas implements Runnable{
 
