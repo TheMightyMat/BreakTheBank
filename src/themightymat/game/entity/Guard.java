@@ -36,28 +36,49 @@ public class Guard extends Player {
 		
 		int xa = 0; int ya = 0;
 		
-		if (movingDir == 0) { // Moving Up
-			ya--;
-			this.guardCamera.setAngle(0);
-		}
-		if (movingDir == 1) { // Moving Down
-			ya++;
-			this.guardCamera.setAngle(180);
-		}
-		if (movingDir == 2) { // Right
-			xa--;
-			this.guardCamera.setAngle(90);
-		}
-		if (movingDir == 3) { // Left
-			xa++; 
-			this.guardCamera.setAngle(270);
+//		if (movingDir == 0) { // Moving Up
+//			ya--;
+//			this.guardCamera.setAngle(0);
+//		}
+//		if (movingDir == 1) { // Moving Down
+//			ya++;
+//			this.guardCamera.setAngle(180);
+//		}
+//		if (movingDir == 2) { // Right
+//			xa--;
+//			this.guardCamera.setAngle(90);
+//		}
+//		if (movingDir == 3) { // Left
+//			xa++; 
+//			this.guardCamera.setAngle(270);
+//		}
+		
+		switch (movingDir) {
+			case 0: // Moving Up
+				ya--;
+				this.guardCamera.setAngle(0);
+				break;
+			case 1: // Moving Down
+				ya++;
+				this.guardCamera.setAngle(180);
+				break;
+			case 2: // Right
+				xa--;
+				this.guardCamera.setAngle(90);
+				break;
+			case 3: // Left
+				xa++; 
+				this.guardCamera.setAngle(270);
+				break;
 		}
 		
 		if (hasCollided(xa, ya)) {
-			if (movingDir == 0) { movingDir = 1; }
-			else if (movingDir == 1) {movingDir = 0; }
-			else if (movingDir == 2) {movingDir = 3; }
-			else if (movingDir == 3) {movingDir = 2; }
+			switch (movingDir) {
+				case 0: movingDir = 1; break;
+				case 1: movingDir = 0; break;
+				case 2: movingDir = 3; break;
+				case 3: movingDir = 2; break;
+			}
 		} else {
 			move (xa, ya);
 		}

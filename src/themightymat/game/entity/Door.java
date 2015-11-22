@@ -1,5 +1,7 @@
 package themightymat.game.entity;
 
+import java.util.Iterator;
+
 import themightymat.game.gfx.Colors;
 import themightymat.game.gfx.Screen;
 import themightymat.game.level.Level;
@@ -32,7 +34,7 @@ public class Door extends Entity {
 
 	@Override
 	public void render(Screen screen) {
-		if (!disabled) {
+		if (!disabled) { // Don't render this tile if destroyed
 			int xTile = 9;
 			int yTile = 0;
 			screen.render(this.x, this.y, xTile + yTile * 30, color);

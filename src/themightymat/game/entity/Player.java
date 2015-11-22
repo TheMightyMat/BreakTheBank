@@ -10,7 +10,6 @@ public class Player extends Mob {
 	
 	private InputHandler input;
 	private int color = Colors.get(-1, 000, 111, 555); // colors to use for this entity
-	private int ticks = 0;
 	
 	public boolean detected = false;
 	
@@ -21,7 +20,6 @@ public class Player extends Mob {
 
 	@Override
 	public void tick() {
-		ticks++;
 		
 		int xa = 0;
 		int ya = 0;
