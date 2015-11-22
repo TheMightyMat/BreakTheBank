@@ -35,7 +35,7 @@ public class Game extends Canvas implements Runnable{
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final double GAME_VERSION = 00.03;
+	public static final double GAME_VERSION = 00.05;
 	
 	public static final int WIDTH = 160;
 	public static final int HEIGHT = WIDTH;
@@ -70,6 +70,8 @@ public class Game extends Canvas implements Runnable{
 	
 	private int playerStartingX = 30;
 	private int playerStartingY = 30;
+	
+	private UI ui = new UI(screen);
 	
 	public Game() {
 		setMinimumSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
@@ -233,6 +235,11 @@ public class Game extends Canvas implements Runnable{
 		level.renderTiles(screen, xOffset, yOffset);
 		level.renderEntities(screen);
 		
+		
+		// ------------------- \\
+		// --- UI HANDLING --- \\
+		// ------------------- \\
+		
 		Graphics g = bs.getDrawGraphics();
 		Graphics2D g2 = (Graphics2D) g;
 		
@@ -257,6 +264,11 @@ public class Game extends Canvas implements Runnable{
 		
 		g.dispose();
 		bs.show();
+		
+		if (detection >= 100) {
+			ui.deathScreen(screen);
+		}
+		
 		
 		for (int y=0; y < screen.height; y++) {
 			for (int x=0; x < screen.width; x++) {

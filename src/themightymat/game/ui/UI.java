@@ -6,6 +6,7 @@ import themightymat.game.gfx.Screen;
 public class UI {
 	
 	private Screen screen;
+	private int count;
 	
 	public UI(Screen screen) {
 		this.screen = screen;
@@ -51,5 +52,18 @@ public class UI {
 			count++;
 		}
 		
+	}
+	
+	public void deathScreen(Screen screen) {
+		for (int xPixel = 0; xPixel < screen.width; xPixel++) {
+			for (int yPixel = 0; yPixel < screen.height; yPixel++) {
+				if (screen.pixels[xPixel + yPixel * screen.width] + Colors.get(200) > 215) {
+					screen.pixels[xPixel + yPixel * screen.width] = 215;
+				} else {
+					screen.pixels[xPixel + yPixel * screen.width] = screen.pixels[xPixel + yPixel * screen.width] + Colors.get(200);
+				}
+//				screen.pixels[xPixel + yPixel * screen.width] = ((screen.pixels[xPixel + yPixel * screen.width] + Colors.get(100)) > 215) ? 215 : screen.pixels[xPixel + yPixel * screen.width] + Colors.get(300);
+			}
+		}
 	}
 }
