@@ -21,31 +21,34 @@ public class Player extends Mob {
 	@Override
 	public void tick() {
 		
-		int xa = 0;
-		int ya = 0;
-		
-		if (input.up.isPressed()) {ya--;}
-		if (input.down.isPressed()) {ya++;}
-		if (input.left.isPressed()) {xa--;}
-		if (input.right.isPressed()) {xa++;}
-		
-		if (xa != 0 || ya != 0) {
-			move(xa, ya);
-			isMoving = true;
-		} else {
-			isMoving = false;
-		}
-		
-		boolean detectedThisTick = false; // Stores if the player was detected this tick
-		for (Camera camera : Game.cameras) {
-			if (camera.canSeePlayer) {
-				detectedThisTick = true;
-				detected = true;
-				break;
+		if (!Game.caught) {
+			
+			int xa = 0;
+			int ya = 0;
+			
+			if (input.up.isPressed()) {ya--;}
+			if (input.down.isPressed()) {ya++;}
+			if (input.left.isPressed()) {xa--;}
+			if (input.right.isPressed()) {xa++;}
+			
+			if (xa != 0 || ya != 0) {
+				move(xa, ya);
+				isMoving = true;
+			} else {
+				isMoving = false;
 			}
-		}
-		if (!detectedThisTick) {
-			detected = false;
+			
+			boolean detectedThisTick = false; // Stores if the player was detected this tick
+			for (Camera camera : Game.cameras) {
+				if (camera.canSeePlayer) {
+					detectedThisTick = true;
+					detected = true;
+					break;
+				}
+			}
+			if (!detectedThisTick) {
+				detected = false;
+			}
 		}
 	}
 	

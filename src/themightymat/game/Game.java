@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -35,7 +36,7 @@ public class Game extends Canvas implements Runnable{
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final double GAME_VERSION = 00.05;
+	public static final double GAME_VERSION = 00.06;
 	
 	public static final int WIDTH = 160;
 	public static final int HEIGHT = WIDTH;
@@ -43,6 +44,7 @@ public class Game extends Canvas implements Runnable{
 	public static final String NAME = "Game";
 	
 	public static final double DETECTION_RATE = 1.0;
+	public static final String DEATH_MESSAGE = "YOU GOT CAUGHT!";
 	
 	private JFrame frame;
 	
@@ -51,6 +53,7 @@ public class Game extends Canvas implements Runnable{
 	
 	public static double detection = 0; // Player detection
 	public static int money = 0; // Player money and score
+	public static boolean caught = false;
 	
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
@@ -71,7 +74,10 @@ public class Game extends Canvas implements Runnable{
 	private int playerStartingX = 30;
 	private int playerStartingY = 30;
 	
-	private UI ui = new UI(screen);
+	private UI ui;
+	
+	private int ticks;
+	private int prevTicks = 0;
 	
 	public Game() {
 		setMinimumSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
@@ -106,6 +112,7 @@ public class Game extends Canvas implements Runnable{
 		}
 		
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
+		ui = new UI(screen);
 		input = new InputHandler(this);
 		level = new Level("/level2.png");
 		
@@ -167,7 +174,7 @@ public class Game extends Canvas implements Runnable{
 		long lastTime = System.nanoTime(); // Starting time
 		double nsPerTick = 1000000000D/60D; // Number of nanoseconds 1 tick should last
 		
-		int ticks = 0;
+		ticks = 0;
 		int frames = 0;
 		
 		long lastTimer = System.currentTimeMillis(); // Used for fps calculation
@@ -200,7 +207,6 @@ public class Game extends Canvas implements Runnable{
 				ticks = 0; // Reset frames and ticks
 			}
 			
-			
 		}
 		
 	}
@@ -209,13 +215,15 @@ public class Game extends Canvas implements Runnable{
 	public void tick() {
 		tickCount++;
 		
-		if (player.detected) {
-			detection += DETECTION_RATE;
-			if (detection > 100) { detection = 100; }
-		} else {
-			if (tickCount%5 == 0) {
-				detection--;
-				if (detection < 0) { Game.detection = 0; };
+		if (!caught) {
+			if (player.detected) {
+				detection += DETECTION_RATE;
+				if (detection > 100) { detection = 100; }
+			} else {
+				if (tickCount%5 == 0) {
+					detection--;
+					if (detection < 0) { Game.detection = 0; };
+				}
 			}
 		}
 		
@@ -250,11 +258,11 @@ public class Game extends Canvas implements Runnable{
 			g2.setColor(Color.RED.brighter());
 			
 			if (!entity.getCanBeDisabledValue() || !camerasDisabled) {
-				g2.drawLine((entity.getX() - screen.xOffset) * SCALE, (int) (entity.getY() - screen.yOffset) * SCALE, (int) (entity.maxViewLeft.getX() - screen.xOffset) * SCALE, (int) (entity.maxViewLeft.getY() - screen.yOffset) * SCALE);
-				g2.drawLine((entity.getX() - screen.xOffset) * SCALE, (int) (entity.getY() - screen.yOffset) * SCALE, (int) (entity.maxViewRight.getX() - screen.xOffset) * SCALE, (int) (entity.maxViewRight.getY() - screen.yOffset) * SCALE);
+				ui.drawLine((entity.getX() - screen.xOffset), (int) (entity.getY() - screen.yOffset), (int) (entity.maxViewLeft.getX() - screen.xOffset), (int) (entity.maxViewLeft.getY() - screen.yOffset));
+				ui.drawLine((entity.getX() - screen.xOffset), (int) (entity.getY() - screen.yOffset), (int) (entity.maxViewRight.getX() - screen.xOffset), (int) (entity.maxViewRight.getY() - screen.yOffset));
 			}
 			
-			g2.drawLine((player.getX() - screen.xOffset) * SCALE, (player.getY() - screen.yOffset) * SCALE, (player.getX() - screen.xOffset) * SCALE + 1, (player.getY()- screen.yOffset) * SCALE + 1 );
+			ui.drawLine((player.getX() - screen.xOffset), (player.getY() - screen.yOffset), (player.getX() - screen.xOffset) + 1, (player.getY()- screen.yOffset) + 1);
 		}
 		
 		Font.render(Integer.toString((int) Math.round(detection)), screen, screen.xOffset + 5, screen.yOffset + 5, Colors.get(000, 000, 555, 555), 1);
@@ -262,11 +270,23 @@ public class Game extends Canvas implements Runnable{
 		
 		Font.render("Alpha " + GAME_VERSION, screen, screen.xOffset, (screen.height - 10) + screen.yOffset, Colors.get(000, 000, 000, 555), 1);
 		
+//		ui.drawLine(50, 50, 90, 89);
+		
 		g.dispose();
 		bs.show();
 		
 		if (detection >= 100) {
 			ui.deathScreen(screen);
+			Font.render(DEATH_MESSAGE, screen, screen.width/2-((DEATH_MESSAGE.length() * 8) / 2) + screen.xOffset, screen.width/2 + screen.yOffset, Colors.get(000, 000, 000, 555), 1);
+			if (!caught) {
+				prevTicks = ticks;
+			}
+			caught = true;
+			prevTicks++;
+			if (prevTicks > 5 * 60) {
+				stop();
+				System.exit(0);
+			}
 		}
 		
 		
