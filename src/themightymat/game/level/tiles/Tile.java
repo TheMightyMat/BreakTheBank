@@ -18,6 +18,8 @@ public abstract class Tile {
 	public static final Tile DOOR = new BasicTile(8, 5, 0, Colors.get(-1, -1, 222, 444), 0xFFFF9900, "Door");
 	public static final Tile DOOR_RELEASE = new BasicTile(9, 5, 0, Colors.get(-1, -1, 222, 444), 0xFFFF99FF, "Door_Release");
 	public static final Tile SPAWN = new BasicTile(10, 11, 0, Colors.get(522, 555, -1, -1), 0xFFFFD800, "Spawn");
+	public static final Tile DOOR_SPECIAL = new BasicTile(11, 5, 0, Colors.get(-1, -1, 222, 444), 0xFFFF00E1, "Special_Door");
+	public static final Tile DOOR_RELEASE_SPECIAL = new BasicTile(12, 5, 0, Colors.get(-1, -1, 222, 444), 0xFFFFFF00, "Special_Door_Release");
 	
 	protected byte id;
 	protected boolean solid;

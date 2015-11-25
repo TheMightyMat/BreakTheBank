@@ -27,6 +27,8 @@ public class Level {
 	public static ArrayList<Point> doors = new ArrayList<Point>();
 	public static ArrayList<Point> doorReleases = new ArrayList<Point>();
 	public static ArrayList<Point> spawns = new ArrayList<Point>();
+	public static ArrayList<Point> specialDoors = new ArrayList<Point>();
+	public static ArrayList<Point> specialDoorReleases = new ArrayList<Point>();
 	private String imagePath;
 	private BufferedImage image;
 	private int[] levelPixels;
@@ -73,6 +75,10 @@ public class Level {
 									doorReleases.add(new Point(x * 8, y * 8));
 								} else if (t.getClassName() == "Spawn") {
 									spawns.add(new Point(x * 8, y * 8));
+								} else if (t.getClassName() == "Special_Door") {
+									specialDoors.add(new Point(x * 8, y * 8));
+								} else if (t.getClassName() == "Special_Door_Release") {
+									specialDoorReleases.add(new Point(x * 8, y * 8));
 								}
 							}
 							break tileCheck;

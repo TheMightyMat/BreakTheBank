@@ -21,6 +21,8 @@ import themightymat.game.entity.Camera;
 import themightymat.game.entity.CameraRoom;
 import themightymat.game.entity.Door;
 import themightymat.game.entity.DoorRelease;
+import themightymat.game.entity.DoorSpecial;
+import themightymat.game.entity.DoorSpecialRelease;
 import themightymat.game.entity.Guard;
 import themightymat.game.entity.Objective;
 import themightymat.game.entity.Player;
@@ -42,7 +44,7 @@ public class Game extends Canvas implements Runnable{
 	public static final int SCALE = 4; // No higher than 6
 	public static final String NAME = "Break the Bank " + GAME_VERSION;
 	
-	public static final double DETECTION_RATE = 2.0;
+	public static final double DETECTION_RATE = 1.5;
 	public static final String DEATH_MESSAGE = "YOU GOT CAUGHT!";
 	
 	private JFrame frame;
@@ -157,6 +159,14 @@ public class Game extends Canvas implements Runnable{
 			double newDoorReleaseX = newDoorRelease.getX();
 			double newDoorReleaseY = newDoorRelease.getY();
 			level.addEntity(new DoorRelease(level, (int) newDoorReleaseX, (int) newDoorReleaseY, 10, player));
+		} for (Point newSpecialDoor : Level.specialDoors) {
+			double newSpecialDoorX = newSpecialDoor.getX();
+			double newSpecialDoorY = newSpecialDoor.getY();
+			level.addEntity(new DoorSpecial(level, (int) newSpecialDoorX, (int) newSpecialDoorY, false));
+		} for (Point newDoorSpecialRelease : Level.specialDoorReleases) {
+			double newDoorSpecialReleaseX = newDoorSpecialRelease.getX();
+			double newDoorSpecialReleaseY = newDoorSpecialRelease.getY();
+			level.addEntity(new DoorSpecialRelease(level, (int) newDoorSpecialReleaseX, (int) newDoorSpecialReleaseY, 10, player));
 		}
 	}
 	
