@@ -8,7 +8,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -36,14 +35,14 @@ public class Game extends Canvas implements Runnable{
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final double GAME_VERSION = 00.06;
+	public static final double GAME_VERSION = 00.07;
 	
 	public static final int WIDTH = 160;
 	public static final int HEIGHT = WIDTH;
 	public static final int SCALE = 4; // No higher than 6
-	public static final String NAME = "Game";
+	public static final String NAME = "Break the Bank " + GAME_VERSION;
 	
-	public static final double DETECTION_RATE = 1.0;
+	public static final double DETECTION_RATE = 2.0;
 	public static final String DEATH_MESSAGE = "YOU GOT CAUGHT!";
 	
 	private JFrame frame;
@@ -114,7 +113,7 @@ public class Game extends Canvas implements Runnable{
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
 		ui = new UI(screen);
 		input = new InputHandler(this);
-		level = new Level("/level2.png");
+		level = new Level("/level3.png");
 		
 		spawnLoop : for (Point newSpawn : Level.spawns) { // Iterates through spawn blocks (should only be 1, if none it will not execute)
 			playerStartingX = (int) newSpawn.getX(); // Set player starting co-ordinates

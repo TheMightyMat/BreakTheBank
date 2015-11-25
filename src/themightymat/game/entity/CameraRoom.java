@@ -14,6 +14,8 @@ public class CameraRoom extends Entity {
 	
 	public boolean destroyed = false;
 	
+	private int ticksSinceCamsDisabled = 0;
+	
 	public CameraRoom (Level level, int x, int y, int pickupDist, Player player) {
 		super(level);
 		this.x = x;
@@ -29,6 +31,13 @@ public class CameraRoom extends Entity {
 			if (playerDist < pickupDist) {
 				Game.camerasDisabled = true;
 				this.destroy();
+				ticksSinceCamsDisabled = 0;
+			}
+		} else {
+			ticksSinceCamsDisabled++;
+			if (ticksSinceCamsDisabled >= 30 * 60) {
+				this.destroyed = false;
+				Game.camerasDisabled = false;
 			}
 		}
 		
