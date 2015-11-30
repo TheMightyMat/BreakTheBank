@@ -44,7 +44,7 @@ public class Game extends Canvas implements Runnable{
 	public static final int SCALE = 4; // No higher than 6
 	public static final String NAME = "Break the Bank " + GAME_VERSION;
 	
-	public static final double DETECTION_RATE = 1.5;
+	public static final double DETECTION_RATE = 1.8;
 	public static final String DEATH_MESSAGE = "YOU GOT CAUGHT!";
 	
 	private JFrame frame;
